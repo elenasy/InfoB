@@ -3,7 +3,7 @@
 # Test der Aufgabe 11
 
 import unittest
-from Aufgabe11_Wentzel import *
+from Aufgabe11_Yanez_Wentzel import *
 
 if __name__ == '__main__':
     unittest.main()
