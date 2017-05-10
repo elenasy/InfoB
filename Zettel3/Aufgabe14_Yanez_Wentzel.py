@@ -20,21 +20,6 @@ print("main: a=",a," b=",b)
 f(a,b)
 print("main: a=",a," b=",b)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #####
 def f():
     print("Hier ist f.")
