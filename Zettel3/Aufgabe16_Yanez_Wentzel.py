@@ -30,37 +30,52 @@ class Zustand():
     # Überschreiben der eual-Methode der Oberklasse Object
     # Vergleich der Keys anhand ihrer Elemente
     def __eq__(self, other):
-        return (self.ausgangsufer == other.ausgangsufer and self.floss == other.floss and self.endufer == other.endufer)
+        return (set(self.ausgangsufer) == set(other.ausgangsufer) and set(self.floss) == set(other.floss) and set(self.endufer) == set(other.endufer))
+
+    # Zur Verbesserung der Ausgabe
+    def __str__(self):
+        return str(self.ausgangsufer) + str(self.floss) + str(self.endufer)
+
+    def __repr__(self):
+        return self.__str__()
+
+    # Abfangen der unmöglichen/ tötlichen Kombinationen aus Kohlkopf und Schaf und Wolf und Schaf
+    def istUfermoeglich(self,uferZustand):
+        if set(uferZustand) == set(('W','S')) or set(uferZustand) == set(('S','K')):
+            return False
+        else:
+            return True
 
     # Finden der Folgezustände des gegebenen Zustandes
     def findeFolgezustaende(self):
         folgezustaende=[]
 
         # Transport nach rechts
+        if self.floss:
+            platzhalterFloss = (self.floss,)
+        else:
+            platzhalterFloss = ()
+
         for wesen in range(len(self.endufer)):
-            if self.floss:
-                platzhalterFloss=(self.floss,)
-            else:
-                platzhalterFloss=()
-            folgeZustandEndufer=self.endufer[wesen+1:]+platzhalterFloss+self.endufer[:wesen]
+            folgeZustandEndufer=self.endufer[:wesen]+platzhalterFloss+self.endufer[wesen+1:]
             folgeZustandFloss=self.endufer[wesen]
-            folgezustaende.append((self.ausgangsufer,folgeZustandFloss,folgeZustandEndufer))
+            if self.istUfermoeglich(folgeZustandEndufer):
+                folgezustaende.append((self.ausgangsufer,folgeZustandFloss,folgeZustandEndufer))
 
         # Nur rechts abladen
-        folgezustaende.append((self.ausgangsufer,(),self.endufer+(self.floss,)))
+        if self.floss and self.istUfermoeglich(self.endufer+platzhalterFloss):
+            folgezustaende.append((self.ausgangsufer,(),self.endufer+platzhalterFloss))
 
     # Transport nach links
         for wesen in range(len(self.ausgangsufer)):
-            if self.floss:
-                platzhalterFloss=(self.floss,)
-            else:
-                platzhalterFloss=()
-            folgeZustandAusgangsufer=self.ausgangsufer[wesen+1:]+platzhalterFloss+self.ausgangsufer[:wesen]
+            folgeZustandAusgangsufer=self.ausgangsufer[:wesen]+platzhalterFloss+self.ausgangsufer[wesen+1:]
             folgeZustandFloss=self.ausgangsufer[wesen]
-            folgezustaende.append((folgeZustandAusgangsufer,folgeZustandFloss,self.endufer))
+            if self.istUfermoeglich(folgeZustandAusgangsufer):
+                folgezustaende.append((folgeZustandAusgangsufer,folgeZustandFloss,self.endufer))
 
         # Nur links abladen
-        folgezustaende.append((self.ausgangsufer + (self.floss,), (), self.ausgangsufer))
+        if self.floss and self.istUfermoeglich(self.ausgangsufer + platzhalterFloss):
+            folgezustaende.append((self.ausgangsufer + platzhalterFloss, (), self.endufer))
 
         return [Zustand(einzelzustand) for einzelzustand in folgezustaende]
 
@@ -71,8 +86,10 @@ def graphWoerterbuch(startzustand):
     folgezustaendeErsterZustand = ersterZustand.findeFolgezustaende()
 
     # Eröffnen des Graph-Wörterbuches
-    wzkGraph={ersterZustand: folgezustaendeErsterZustand}
-    warteschlange=folgezustaendeErsterZustand
+    #wzkGraph={ersterZustand: folgezustaendeErsterZustand}
+    wzkGraph = {}
+    #warteschlange=folgezustaendeErsterZustand
+    warteschlange = [ersterZustand]
 
     # Breitensuche zur Belegung des Wörterbuchs
     while warteschlange:
@@ -80,21 +97,54 @@ def graphWoerterbuch(startzustand):
         del warteschlange[0]
         if aktuellerZustand not in wzkGraph:
             folgezustaendeNeuerZustand=aktuellerZustand.findeFolgezustaende()
-            #print(type(folgezustaendeNeuerZustand))
             wzkGraph[aktuellerZustand]=folgezustaendeNeuerZustand
+            warteschlange+=[zustand for zustand in folgezustaendeNeuerZustand if zustand not in warteschlange]
 
-            warteschlange+=folgezustaendeNeuerZustand
-            #print(folgeZustand,":", folgezustaendeNeuerZustand)
-            #print()
 
     return wzkGraph
 
+# Ausprobieren
+print("##### Aufgabe 16 #####")
+derGraph=graphWoerterbuch((('W','K','S'),(),()))
+print("Der Graph:")
+for x in derGraph:
+    print(x," : ", derGraph[x])
 
-graphWoerterbuch((('W','K'),'',('S',)))
+print("Ausprobieren des Wegfindens ... leider nicht erfolgreich :(")
+def sucheWeg(Vorgänger, ziel):
+    z = ziel
+    weg = []
+    while z is not None:
+        weg.append(z)
+        z = Vorgänger[z]
+    weg.reverse()
+    return weg
+
+# Funktion zum Finden des kürzesten Wegs vom Start- zum Zielknoten
+def findeWeg(G,Startzustand,Zielzustand):
+
+    vorgaenger={}
+    liste=[Startzustand]
+
+    while liste:
+        aktuellerZustand=liste[0]
+        #weg.append(aktuellerZustand)
+        del liste[0]
+        if aktuellerZustand == Zielzustand:
+            return sucheWeg(vorgaenger,Zielzustand)
+
+        for nachbarKnoten in G[aktuellerZustand]:
+            if not nachbarKnoten in vorgaenger[aktuellerZustand]:
+                vorgaenger[nachbarKnoten]=aktuellerZustand
+
+            if nachbarKnoten not in liste:
+                liste.append(nachbarKnoten)
+
+gefundenerWeg=findeWeg(derGraph,Zustand((("W","K","S"),(),())),Zustand(((),(),("W","K","S"))))
+print(gefundenerWeg)
+print()
 
 
 
-#versuch=Zustand((('W','K'),'',('S',)))
-#print(versuch.findeFolgezustaende())
 
 

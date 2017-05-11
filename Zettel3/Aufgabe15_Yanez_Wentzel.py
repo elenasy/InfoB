@@ -7,32 +7,32 @@
 ######################################################################################################################
 from turtle import *
 
-# Definieren einer Verfolgerklasse (Unterklasse der Klasse turtle)
-# class Verfolger(Turtle):
-#     def __init__(self,ziel):
-#         super().__init__()  # Aufrufen des init-Konstruktors der Klasse turtle
-#         self.zielschildkroete=ziel  # Instanzvariable der Verfolgerinstanz
-#
-#     def verfolge(self,schrittweite):
-#         # Verändern der Blickrichtung unserer Verfolgerinstanz und Bewegen in die vorgegebene Richtung
-#         self.setheading(self.towards(self.zielschildkroete.position()))
-#         self.forward(schrittweite)
-#
-# # Ausprobieren der Klasse Verfolger
-# print("##### Aufgabe 15a #####")
-# print("Erzeugen einer Zielschildkröte Shredder")
-# shredder=Turtle()
-# shredder.up()
-# shredder.setposition(100,200)
-# print("Position der Zielschildkröte Shredder:",shredder.position())
-# print()
-#
-# print("Verfolgen von Shredder mit der Schrittweite 100")
-# teenageMutantNinjaTurtle=Verfolger(shredder)
-# print("Anfängliche Position der TMNT:",teenageMutantNinjaTurtle.position())
-# teenageMutantNinjaTurtle.verfolge(100)
-# print("Neue Position der TMNT:",teenageMutantNinjaTurtle.position())
-# print()
+#Definieren einer Verfolgerklasse (Unterklasse der Klasse turtle)
+class Verfolger(Turtle):
+    def __init__(self,ziel):
+        super().__init__()  # Aufrufen des init-Konstruktors der Klasse turtle
+        self.zielschildkroete=ziel  # Instanzvariable der Verfolgerinstanz
+
+    def verfolge(self,schrittweite):
+        # Verändern der Blickrichtung unserer Verfolgerinstanz und Bewegen in die vorgegebene Richtung
+        self.setheading(self.towards(self.zielschildkroete.position()))
+        self.forward(schrittweite)
+
+# Ausprobieren der Klasse Verfolger
+print("##### Aufgabe 15a #####")
+print("Erzeugen einer Zielschildkröte Shredder")
+shredder=Turtle()
+shredder.up()
+shredder.setposition(100,200)
+print("Position der Zielschildkröte Shredder:",shredder.position())
+print()
+
+print("Verfolgen von Shredder mit der Schrittweite 100")
+teenageMutantNinjaTurtle=Verfolger(shredder)
+print("Anfängliche Position der TMNT:",teenageMutantNinjaTurtle.position())
+teenageMutantNinjaTurtle.verfolge(100)
+print("Neue Position der TMNT:",teenageMutantNinjaTurtle.position())
+print()
 ######################################################################################################################
 #                                           Aufgabe 15b) Rechteck zeichnen                                           #
 ######################################################################################################################
@@ -61,11 +61,12 @@ class Rechteck():
         rechteckturtle.setheading(270)  # Drehen des Pfeils nach unten
         rechteckturtle.goto(self.xkoordinaten[0],self.ykoordinaten[0])
 
-# Ausprobieren der Klasse Rechteck
-#print("Zeichnen eines Rechtecks mit den Koordinaten: (links:-200, rechts:300, unten:0, oben:200)")
-#neuesRechteck=Rechteck(-200,300,0,200)
-#neuesRechteck.zeichne()
-
+#Ausprobieren der Klasse Rechteck
+print("##### Aufgabe 15b #####")
+print("Zeichnen eines Rechtecks mit den Koordinaten: (links:-200, rechts:300, unten:0, oben:200)")
+neuesRechteck=Rechteck(-200,300,0,200)
+neuesRechteck.zeichne()
+print()
 ######################################################################################################################
 #                                       Aufgabe 15c) Begrenzte Schildkrötenjagd                                      #
 ######################################################################################################################
@@ -74,9 +75,9 @@ from math import *
 # Klasse zum Wegrennen innerhalb der optionalen Begrenzung
 class Wegläufer(Turtle):
     def __init__(self,wovor,Begrenzung=None):
+        super().__init__()
         self.fluchtgrund=wovor
         self.grenzen=Begrenzung
-        super().__init__()
 
     # Zeichnen der optionalen Begrenzung
     def zeichneBegrenzung(self):
@@ -96,33 +97,12 @@ class Wegläufer(Turtle):
         neuePosition = self.position() + (ankathete,gegenkathete)
         return neuePosition
 
-    def pruefePosition(self,Position):
+    def istPositionAusserhalbGrenze(self, Position):
         if (Position[0] < self.grenzen[0] or Position[0] > self.grenzen[1]) or \
                 (Position[1] < self.grenzen[2] or Position[1] > self.grenzen[3]):
             return True
         else:
             return False
-
-    def berechneSchnittpunkt(self,funktionsGraph,grenzWert,gesuchteAchse):
-        # Es gibt zwei mögliche Schnittereignisse: Schneiden mit den Seitenbegrenzungen links oder rechts
-        # oder Schneiden mit der Ober- oder Unterbegrenzung
-        # Berechnung durch Umstellen der Funktionsgleichung zur gewünschten Koordinate (y=mx+n)
-        if gesuchteAchse == "x":
-            # x = ( y - n ) / m
-            x=(grenzWert-funktionsGraph[1])/funktionsGraph[0]
-            return (x,grenzWert)
-        else:
-            # y = mx + n
-            y=(funktionsGraph[0]*grenzWert)+funktionsGraph[1]
-            return (grenzWert,y)
-
-    def berechneDistanzZumSchnitppunkt(self,aktuellePosition,schnittpunkt):
-        # Anhand des Satzes von Pythagoras wird der Abstand zwischen dem aktuellen Standpunkt und dem
-        # Schnittpunkt mit der begrenzung berechnet
-        x=schnittpunkt[0]-aktuellePosition[0]
-        y=schnittpunkt[1]-aktuellePosition[1]
-        distanz=sqrt((x**2)+(y**2))
-        return distanz
 
     def berechneFunktionsgleichung(self,aktuellePosition,zukuenftigePosition):
         # Anhand des aktuellen und des zukünftigen Punktes werden die Komponenten einer Funktionsgleichung berechnet
@@ -135,15 +115,36 @@ class Wegläufer(Turtle):
 
         return (steigung,absolutesGlied)
 
+    def berechneSchnittpunktMitGrenze(self, funktionsGraph, grenzWert, gesuchteAchse):
+        # Es gibt zwei mögliche Schnittereignisse: Schneiden mit den Seitenbegrenzungen links oder rechts
+        # oder Schneiden mit der Ober- oder Unterbegrenzung
+        # Berechnung durch Umstellen der Funktionsgleichung zur gewünschten Koordinate (y=mx+n)
+        if gesuchteAchse == "x":
+            # x = ( y - n ) / m
+            x=(grenzWert-funktionsGraph[1])/funktionsGraph[0]
+            return (x,grenzWert)
+        else:
+            # y = mx + n
+            y=(funktionsGraph[0]*grenzWert)+funktionsGraph[1]
+            return (grenzWert,y)
+
+    def berechneDistanzZumSchnittpunkt(self, aktuellePosition, schnittpunkt):
+        # Anhand des Satzes von Pythagoras wird der Abstand zwischen dem aktuellen Standpunkt und dem
+        # Schnittpunkt mit der begrenzung berechnet
+        x=schnittpunkt[0]-aktuellePosition[0]
+        y=schnittpunkt[1]-aktuellePosition[1]
+        distanz=sqrt((x**2)+(y**2))
+        return distanz
+
     def laufweg(self, schrittweite=30):
         # Wenn eine Begrenzung existiert, dann soll diese eingezeichnet werden
         if self.grenzen:
-            if self.pruefePosition(self.position()):
-                raise ValueError("Du befindest dich außerhalb der Begrenzung, bitte ändere deine Position oder die Begrenzung!")
+            # Die verfolte Turtle startet standardmäßig an der Position (0,0), deshalb muss getestet
+            # werden, ob die angegebene Begrenzung die Turtle überhaupt beinhaltet
+            if self.istPositionAusserhalbGrenze(self.position()):
+                raise ValueError("Du befindest dich außerhalb der Begrenzung, bitte ändere die Begrenzung!")
             else:
                 self.zeichneBegrenzung()
-        else:
-            pass
 
         # Verfolgte Turtle richtet sich entgegengesetzt zu ihrem Verfolger aus, jedoch ohne, dass der Fliehwinkel die
         # mathematisch vorgegebenen Winkelgrößen überschreitet (also zwischen 0 und 360)
@@ -153,95 +154,83 @@ class Wegläufer(Turtle):
             fliehwinkel = richtung -180
         elif richtung < 180 and richtung >=0:
             fliehwinkel = richtung +180
-        else:
-            pass
+
         self.setheading(fliehwinkel)
 
-        # Bevor die Turtle wegrennt, muss getestet werden, ob sie sich danach noch innerhalb der Begrenzung befindet.
-        # Hierzu wird anhand der Schrittweite und des momentanen Wegrennwinkels die nächste Position berechnet
-
-        # Anhand der nächsten Position wird, wenn diese sich außerhalb der Begrenzung befindet, eine Funktionsgleichung
-        # berechnet, die die Gerade zwischen der aktuellen Position und der zukünftigen parametrieseirt.
-        # Daraufhin wird der Schnittpunkt dieser Gerade mit der in Fliehrichtung liegenden Begrenzung berechnet und
-        # daraus der Abstand zwischen aktueller Position und Begrenzung. Dieser Abstand wird nun überbrückt und der
-        # verbleibende Teil der vorgegebenen Schrittweite wird in eine andere Richtung fortgesetzt (parallel zur Grenze)
-
-        # Die Methode berechne.Schnittpunkt benötigt eine Angabe, welche der Begrenzungen geschnitten wird
-        # Hierzu wurde der Winkel zwischen der aktuellen Position und den 4 Ecken des Rechtecks berechnet und dieses
-        # dann in 4 Quadranten aufgeteilt. Je nach Fliehwinkel liegt der Schnittpunkt in einem der 4 Quadranten und
-        # dementsprechend kann die jeweilige Grenze übergeben werden.
-        # 1. Quadrant: Winkel zwischen der oberen rechten und der oberen linken Ecke
-        # -> Schnitt der oberen Begrenzung
-        # 2. Quadrant: Winkel zwischen der oberen linken und der unteren linken Ecke
-        # -> Schnitt der linken Begrenzung
-        # 3. Quadrant: Winkel zwischen der unteren linken und der unteren rechten Ecke
-        # -> Schnitt der unteren Begrenzung
-        # 4. Quadrant: Winkel zwischen der unteren rechten Ecke und der oberen rechten Ecke
-        # -> Schnitt mit der unteren Begrenzung
-        #!! Achtung: Geraden, die genau durch die Ecken verlaufen, werde hier nicht berücksichtigt!!
-
-
-
-        #Abfrage, ob sich die neue Position außerhalb der optionalen Begrenzung befindet, wenn eine existiert
         if self.grenzen:
-            schnittpunkt = ()
             restdistanz = schrittweite
-            print("Restdistanz Beginn: ",restdistanz)
-            print("Fliehwinkel Beginn: ",fliehwinkel)
-            print()
 
             while restdistanz>0:
+                # Die Methode berechneSchnittpunkt benötigt eine Angabe, welche der Begrenzungen geschnitten wird
+                # Hierzu wurde der Winkel zwischen der aktuellen Position und den 4 Ecken des Rechtecks berechnet
+                # und dieses dann in 4 Quadranten aufgeteilt. Je nach Fliehwinkel liegt der Schnittpunkt in einem der
+                # 4 Quadranten und dementsprechend kann die jeweilige Grenze übergeben werden.
+                # 1. Quadrant: Winkel zwischen der oberen rechten und der oberen linken Ecke
+                # -> Schnitt der oberen Begrenzung
+                # 2. Quadrant: Winkel zwischen der oberen linken und der unteren linken Ecke
+                # -> Schnitt der linken Begrenzung
+                # 3. Quadrant: Winkel zwischen der unteren linken und der unteren rechten Ecke
+                # -> Schnitt der unteren Begrenzung
+                # 4. Quadrant: Winkel zwischen der unteren rechten Ecke und der oberen rechten Ecke
+                # -> Schnitt mit der unteren Begrenzung
+                # !! Achtung: Geraden, die genau durch die Ecken verlaufen, werde hier nicht berücksichtigt!!
                 winkelobenrechts = self.towards((self.grenzen[1], self.grenzen[3]))
                 winkelobenlinks = self.towards((self.grenzen[0], self.grenzen[3]))
                 winkeluntenrechts = self.towards((self.grenzen[1], self.grenzen[2]))
                 winkeluntenlinks = self.towards((self.grenzen[0], self.grenzen[2]))
 
+                # Bevor die Turtle wegrennt, muss getestet werden, ob sie sich danach noch innerhalb der Begrenzung
+                #  befindet. Hierzu wird anhand der Schrittweite und des momentanen Wegrennwinkels die nächste
+                # Position berechnet
                 zukuenftigePosition = self.berechneNeuePosition(fliehwinkel, restdistanz)
 
-                print("Zukünftige Position außerhalb: ",self.pruefePosition(zukuenftigePosition))
-                if self.pruefePosition(zukuenftigePosition):
+                # Anhand der nächsten Position wird, wenn diese sich außerhalb der Begrenzung befindet,
+                # eine Funktionsgleichung berechnet, die die Gerade zwischen der aktuellen Position und der
+                # zukünftigen parametrieseirt.
+                if self.istPositionAusserhalbGrenze(zukuenftigePosition):
                     funktionsgleichung = self.berechneFunktionsgleichung(self.position(), zukuenftigePosition)
                     schnittpunkt=()
-                    if (fliehwinkel > -1 and fliehwinkel < winkelobenrechts) or (fliehwinkel > winkeluntenrechts and fliehwinkel <= 360):
-                        schnittpunkt = self.berechneSchnittpunkt(funktionsgleichung, self.grenzen[1], "y")
+                    if (fliehwinkel > -1 and fliehwinkel < winkelobenrechts) or \
+                            (fliehwinkel > winkeluntenrechts and fliehwinkel <= 360):
+                        schnittpunkt = self.berechneSchnittpunktMitGrenze(funktionsgleichung, self.grenzen[1], "y")
 
                     elif fliehwinkel > winkelobenrechts and fliehwinkel < winkelobenlinks:
-                        schnittpunkt = self.berechneSchnittpunkt(funktionsgleichung, self.grenzen[3], "x")
+                        schnittpunkt = self.berechneSchnittpunktMitGrenze(funktionsgleichung, self.grenzen[3], "x")
 
                     elif fliehwinkel > winkelobenlinks and fliehwinkel < winkeluntenlinks:
-                        schnittpunkt = self.berechneSchnittpunkt(funktionsgleichung, self.grenzen[0], "y")
+                        schnittpunkt = self.berechneSchnittpunktMitGrenze(funktionsgleichung, self.grenzen[0], "y")
 
                     elif fliehwinkel > winkeluntenlinks and fliehwinkel < winkeluntenrechts:
-                        schnittpunkt = self.berechneSchnittpunkt(funktionsgleichung, self.grenzen[2], "x")
+                        schnittpunkt = self.berechneSchnittpunktMitGrenze(funktionsgleichung, self.grenzen[2], "x")
 
-                    else:
-                        pass
-
-                    schnittpunktdistanz = self.berechneDistanzZumSchnitppunkt(self.position(), schnittpunkt)
-
-                    print("Schnittpunktdistanz: ",schnittpunktdistanz)
+                    # Daraufhin wird der Schnittpunkt dieser Gerade mit der in Fliehrichtung liegenden Begrenzung und
+                    # daraus der Abstand zwischen aktueller Position und Begrenzung berechnet. Dieser Abstand wird
+                    # nun überbrückt und der verbleibende Teil der vorgegebenen Schrittweite wird in eine andere
+                    # Richtung fortgesetzt (parallel zur Grenze) -> Funktioniert leider nicht wie gedacht
+                    schnittpunktdistanz = self.berechneDistanzZumSchnittpunkt(self.position(), schnittpunkt)
 
 
                     if schnittpunktdistanz > 10:
-                        print("Laufe Schnittpunktsdistanz -10")
                         self.forward(schnittpunktdistanz - 10)
-                        if fliehwinkel > 180:
-                            self.right(abs(180-fliehwinkel))
-                            fliehwinkel = fliehwinkel + (180 - fliehwinkel)
+                        einfallswinkel=abs(fliehwinkel-180)
+                        reflektionswinkel=abs(180-(2*einfallswinkel))
+
+                        if einfallswinkel <90:
+                            self.left(einfallswinkel)
+                            fliehwinkel=fliehwinkel+2*einfallswinkel
                         else:
-                            self.left(abs(180-fliehwinkel))
-                            fliehwinkel = fliehwinkel - (180 - fliehwinkel)
+                            self.left(reflektionswinkel)
+
                     else:
-                        pass
+                        if einfallswinkel <90:
+                            self.left(einfallswinkel)
+                            fliehwinkel=fliehwinkel+2*einfallswinkel
+                        else:
+                            self.left(reflektionswinkel)
 
+                        self.forward(schnittpunktdistanz)
 
-
-                    #fliehwinkel = fliehwinkel + (180-fliehwinkel)
                     restdistanz = restdistanz - (schnittpunktdistanz - 10)
-                    print("Restdistanz: ", restdistanz)
-                    print()
-                    #zukuenftigePosition = self.berechneNeuePosition(fliehwinkel,restdistanz)
-                    #self.forward(restdistanz)
 
                 else:
                     self.forward(restdistanz)
@@ -249,11 +238,16 @@ class Wegläufer(Turtle):
         else:
             self.forward(schrittweite)
 
-
-
+# Ausprobieren
+print("##### Aufgabe 15c #####")
+print("Instanziieren einer Ninja-Turtle in grüner Farbe")
 Ninja=Turtle()
 Ninja.color("green")
-Ninja.setposition(60,-50)
-Shredder=Wegläufer(Ninja,(-200,300,-50,100))
-Shredder.laufweg(240)
+print("Setzen der Position der Ninja-Turtle auf (-60,40)")
+Ninja.setposition(-60,40)
+print("Instanziieren einer Wegläuferturtle mit der Begrenzung (-400, 300, -250, 200)")
+Shredder=Wegläufer(Ninja,(-400,300,-250,200))
+print("Auf die Plätze, fertig, LOS!")
+Shredder.laufweg(400)
 done()
+print("##### ENDE #####")
