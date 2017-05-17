@@ -13,23 +13,26 @@ def Kochkurve(t,k,Schrittweite):
     t ist hierbei eine Instanz der Klasse Turtle'''
     if k==0:
         return
-    Kochkurve(t, k - 1, Schrittweite)
-    t.forward(Schrittweite)
-    t.left(60)
+    if k==1:
+        t.forward(Schrittweite)
+    else:
+        Kochkurve(t, k - 1, Schrittweite)
+        t.forward(Schrittweite)
+        t.left(60)
 
-    Kochkurve(t, k - 1, Schrittweite)
-    t.forward(Schrittweite)
-    t.right(120)
+        Kochkurve(t, k - 1, Schrittweite)
+        t.forward(Schrittweite)
+        t.right(120)
 
-    Kochkurve(t, k - 1, Schrittweite)
-    t.forward(Schrittweite)
-    t.left(60)
-    Kochkurve(t,k-1,Schrittweite)
-    
+        Kochkurve(t, k - 1, Schrittweite)
+        t.forward(Schrittweite)
+        t.left(60)
+        Kochkurve(t,k-1,Schrittweite)
+
 #Ausprobieren
 turtle=Turtle()
 turtle.up()
 turtle.setposition(-380,0)
 turtle.down()
-Kochkurve(turtle,4,8)
+Kochkurve(turtle,4,10)
 done()
