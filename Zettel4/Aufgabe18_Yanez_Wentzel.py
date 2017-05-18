@@ -11,8 +11,12 @@ def einzelExperiment(n):
     '''Erzeugt so lange Zufallszahlen, bis jede Zahl von 1 bis n einmal vorgekommen ist'''
     gewuerfelteZahlen={}
     anzahlDerWuerfe=0
+    # Die länge des Dictionaries gibt die Anzahl der enthaltenen Keys an, entspricht diese
+    # dem vorgegebenen n, so sind alle Zahlen von 1 bis n mindesten einmal enthalten
     while len(gewuerfelteZahlen) != n:
         zufallszahl=randint(1,n)
+        # Befindet sich die Zufallszahl noch nicht im Dictionary, wird sie hinzugefügt,
+        # wenn doch, dann wird der datzgehörige Value um 1 erhöht
         if zufallszahl not in gewuerfelteZahlen:
             gewuerfelteZahlen[zufallszahl]=1
         else:
@@ -26,6 +30,7 @@ def einzelExperiment(n):
 ######################################################################################################################
 def findeHoechsteHaeufigkeit(wuerfeDict):
     '''Finden der höchstes Häufigkeit '''
+    # Speichern der Values jedes Keys in haeufigkeiten und Bestimmen des Maximums
     haeufigkeiten=wuerfeDict.values()
     groessteHaeufigkeit=max(haeufigkeiten)
     return groessteHaeufigkeit
