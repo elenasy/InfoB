@@ -7,12 +7,12 @@
 ######################################################################################################################
 from random import randint
 
-def einzelExperiment(n):
+def einzelExperiment(n,random):
     '''Erzeugt so lange Zufallszahlen, bis jede Zahl von 1 bis n einmal vorgekommen ist'''
     gewuerfelteZahlen={}
     anzahlDerWuerfe=0
     while len(gewuerfelteZahlen) != n:
-        zufallszahl=randint(1,n)
+        zufallszahl=random(1,n)
         if zufallszahl not in gewuerfelteZahlen:
             gewuerfelteZahlen[zufallszahl]=1
         else:
@@ -36,7 +36,7 @@ for n in [10,100,1000]:
     listeAnzahlDerWuerfe = []
     listeHaeufigkeiten=[]
     for versuchszahl in range(100):
-        wuerfeDict,anzahlDerWuerfe=einzelExperiment(n)
+        wuerfeDict,anzahlDerWuerfe=einzelExperiment(n,randint)
         listeAnzahlDerWuerfe.append(anzahlDerWuerfe)
         listeHaeufigkeiten.append(findeHoechsteHaeufigkeit(wuerfeDict))
 
