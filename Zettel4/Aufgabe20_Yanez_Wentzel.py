@@ -1,7 +1,7 @@
+# -*- coding: iso-8859-15 -*-
 # Zettel 4, Informatik B
 # Elena Schmidt Yanez, Bianca Wentzel
 # Aufgabe 20
-
 ######################################################################################################################
 #                               Aufgabe 20a: Regressives Programmieren der Kochkurve                                 #
 ######################################################################################################################
@@ -31,22 +31,42 @@ def Kochkurve(t,k,Schrittweite):
 
         Kochkurve(t,k-1,Schrittweite/3)
 
+
+# Kleiner Zusatz, weil das so schön aussieht
+def Kochschneeflocke(t,k,Schrittweite):
+    if k==0:
+        return
+    else:
+        t.left(60)
+        Kochkurve(t,k,Schrittweite)
+        t.right(120)
+        Kochkurve(t,k,Schrittweite)
+        t.right(120)
+        Kochkurve(t,k,Schrittweite)
+
+
+
 #Ausprobieren
 print("##### Aufgabe 20a #####")
 print("Zeichnen der Kochkurve der 5. Ordnund.")
-print("Entschuldigung, wenn das zu lange dauert, aber es sieht viel schÃ¶ner aus :)")
+print("Entschuldigung, wenn das zu lange dauert, aber es sieht viel schöner aus :)")
+print("Uns als kleinen Zusatz gibt es die Kochsche Schneeflocke gleich mit dazu.")
 turtle=Turtle()
 turtle.up()
-turtle.setposition(-380,0)
+turtle.setposition(-450,0)
 turtle.down()
-Kochkurve(turtle,4,310)
+Kochkurve(turtle,5,500)
+turtle.up()
+turtle.forward(100)
+turtle.down()
+Kochschneeflocke(turtle,4,400)
 done()
 
 ######################################################################################################################
-#                                    Aufgabe 20b: LÃ¤nge und Abstand der Kochkurve                                    #
+#                                    Aufgabe 20b: Länge und Abstand der Kochkurve                                    #
 ######################################################################################################################
-# Der Abstand zwischen Anfangspunkt und Endpunkt der Kochkurve betrÃ¤gt, egal bei welchem Iterationsschritt,
-# genau Schrittweite. Die sliegt daran, dass bei jedem hÃ¶heren Iterationsschritt, die Schrittweite gedrittelt wird.
+# Der Abstand zwischen Anfangspunkt und Endpunkt der Kochkurve beträgt, egal bei welchem Iterationsschritt,
+# genau Schrittweite. Die sliegt daran, dass bei jedem höheren Iterationsschritt, die Schrittweite gedrittelt wird.
 
-# Die LÃ¤nge der Kochkurve betrÃ¤gt (4/3)^k, wobei k der Ordnung entspricht und die erste Ordnung per Definition der
-# Schrittweite enstpricht. Die LÃ¤nge der Kurve strebt fÃ¼r k -> unendlich gegen unendlich.
+# Die Länge der Kochkurve beträgt (4/3)^k, wobei k der Ordnung entspricht und die erste Ordnung per Definition der
+# Schrittweite enstpricht. Die Länge der Kurve strebt für k -> unendlich gegen unendlich.
