@@ -6,70 +6,98 @@
 #                                           Aufgabe 30a: Haldensortieren                                             #
 ######################################################################################################################
 
-def haldensortierung(liste):
-    halde=[]
-    sortierteliste=[]
+def schreibeElementInHeap(heap,element):
+    # Einfügen des Elements an die letzte Stelle des Heaps
+    heap.append(element)
 
-    # Afabgen ungültiger Parameterübergaben
-    if type(liste) != list:
-        raise TypeError("Es muss eine Liste übergeben werden!")
+    elementIndex = len(heap)-1
+    elternIndex=(elementIndex-1)//2
 
-    for element in liste:
-        if type(element) != int and type(element) != float:
-            raise TypeError("Die Liste darf ausschließlich numerische Elemente beinhalten")
+    while heap[elementIndex] < heap[elternIndex]:
+        heap[elementIndex], heap[elternIndex] = heap[elternIndex], heap[elementIndex]
 
-    # Übergeben der Elemente der Liste der Reihe nach
-    for element in liste:
-        halde.append(element)
+        elementIndex = elternIndex
+        elternIndex = elementIndex//2
 
-    # Counter zur Nachverfolgung der Schritte
-    count=0
+    return heap
 
-    while len(halde)>0:
-        print("Schritt: ",count)
-        print("Halde: ",halde)
-        print("Sortierte Liste: ",sortierteliste)
-        print()
+a=[5,1,4,2,7,3,6]
+heap=[]
 
-        # Schreiben des Minimums der Halde in die sortierte Liste und anschließendes Finden des Indexes dieses Elements
-        # und Löschen des Elements aus der Halde
-        sortierteliste.append(min(halde))
-        for i,j in enumerate(halde):
-            if j == min(halde):
-                index=i
-        del halde[index]
-        count+=1
+for listenelement in a:
+    schreibeElementInHeap(heap,listenelement)
 
-    print("Schritt: ",count)
-    print("Halde: ",halde)
-    print("Sortierte Liste: ",sortierteliste)
+def berechneKinder(elternIndex):
+    return (2 * elternIndex + 1, 2 * elternIndex + 2)
 
-a=[5,1,4,3,7,2,6]
-haldensortierung(a)
+def berechneVergleichskind(heap,linkesKind,rechtesKind):
+    if rechtesKind > len(heap)-1:
+        vergleichsKind = linkesKind
+    else:
+        if heap[linkesKind] <= heap[rechtesKind]:
+            vergleichsKind = linkesKind
+        else:
+            vergleichsKind = rechtesKind
+    return vergleichsKind
+
+def entferneElementAusHeap(heap):
+    # Tauschen des Wurzelelements mit dem letzten Element
+    heap[0],heap[len(heap)-1] = heap[len(heap)-1], heap[0]
+    wurzelElement=heap.pop()
+
+    elternIndex=0
+    linkesKind, rechtesKind = berechneKinder(elternIndex)
+
+    if linkesKind > len(heap)-1:
+        return (heap,wurzelElement)
+
+    vergleichsKind= berechneVergleichskind(heap,linkesKind,rechtesKind)
+
+    while heap[elternIndex] > heap[vergleichsKind]:
+        heap[elternIndex],heap[vergleichsKind] = heap[vergleichsKind], heap[elternIndex]
+        elternIndex=vergleichsKind
+
+        linkesKind, rechtesKind = berechneKinder(elternIndex)
+
+        if linkesKind > len(heap) - 1:
+            break
+
+        vergleichsKind = berechneVergleichskind(heap,linkesKind,rechtesKind)
+
+    return (heap,wurzelElement)
+
+sortierteListe=[]
+
+for listenelement in a:
+   heap,wurzelelement=entferneElementAusHeap(heap)
+   sortierteListe.append(wurzelelement)
+
+print(sortierteListe)
+print(heap)
 
 ######################################################################################################################
 #                                 Aufagbe 30b: Umschreiben von zuklein und zugroß                                    #
 ######################################################################################################################
 # Umschreiben der Funktion zuklein ohne Rekursion
 
-def zuklein(liste,index):
-    '''Element a[i] der Halde ist eventuell zu klein'''
-    if index==1:
-        return
-
-    # Berechnen eines neues Indizes
-    eltern=index//2
-
-    # Wenn das Element an der Stelle des Indizes Eltern größer ist als an der Stelle des übergebenen Indizes, werden
-    # beide Elemente getauscht
-    if liste[eltern]>liste[index]:
-        liste[eltern],liste[index]=liste[index],liste[eltern]
-        return eltern
-
-# Ausfphren der Funktion ohne Rekursion
-index=5
-a=[5,1,4,3,7,2,6]
-
-while index!=1:
-    index=zuklein(a,index)
+# def zuklein(liste,index):
+#     '''Element a[i] der Halde ist eventuell zu klein'''
+#     if index==1:
+#         return
+#
+#     # Berechnen eines neues Indizes
+#     eltern=index//2
+#
+#     # Wenn das Element an der Stelle des Indizes Eltern größer ist als an der Stelle des übergebenen Indizes, werden
+#     # beide Elemente getauscht
+#     if liste[eltern]>liste[index]:
+#         liste[eltern],liste[index]=liste[index],liste[eltern]
+#         return eltern
+#
+# # Ausfphren der Funktion ohne Rekursion
+# index=5
+# a=[5,1,4,3,7,2,6]
+#
+# while index!=1:
+#     index=zuklein(a,index)
 

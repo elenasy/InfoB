@@ -10,29 +10,23 @@
 # Wechselgeld gespeichert wird
 
 # Abfangen ungültiger Eingaben
-# Wenn der übergebene Betrag keine ganze Zahl ist, wird ein fehler ausgegeben
+# Wenn der übergebene Betrag keine ganze Zahl ist, wird ein Fehler ausgegeben
 
-# Wenn der Typ der Münzwerte keine Liste ist und diese Liste andere Elemente als ganze Zahlen enthält, wird ein Fehler
-# ausgegeben
+# Sortiere die Liste der Münzen (aufsteigend)
 
 # Solange der Betrag größer als 0 ist
 
-    # für jeden Münzwert
+    # für jede Münze m beginnend mit der Letzten
 
-        # wenn der aktuelle Münzwert kleiner gleich dem Betrag ist
+        # wenn der aktuelle Münzwert m kleiner gleich dem Betrag ist
 
-            # alle Münzwerte, die dieser Anforderung entsprechen, werde in eine Liste geschrieben (mögliche Münzen)
+            # Schreibe Münzwert m in Liste (Wechselgeld)
 
-    # in eine weitere Liste wird das Maximum der möglichen Münzwerte geschrieben (Wechselgeld)
+            # aktualisiere Betrag durch Subtraktion mit Münzwert
 
-    # danach wird der Betrag aktualisiert, indem der in die Wechselgeldliste geschriebene Münzbetrag vom Betrag
-    # abgezogen wird
+            # Beende Ietration über Münzewerte
 
-    # alle Einträge der Liste der möglichen Münzwerte werden gelöscht
-
-    # Rückgabe der der Wechselgeldliste
-
-# Ausprobieren der Funktion durch Übergabe einer gültigen Münzwertliste und eines gültigen Betrags
+# Rückgabe der Wechselgeldliste
 
 ######################################################################################################################
 #                                           Aufgabe 31b: Wechseln des Betrages                                       #
@@ -54,14 +48,15 @@ def wechseln(munze, betrag):
         if type(element) != int:
             raise TypeError("Die Liste der Münzwerte darf nur ganze Zahlen enthalten!")
 
-    while betrag>0:
-        for x in munze:
-            if x <= betrag:
-                moeglichemuenzen.append(x)
+    # Sortieren der Münzbeträge
+    munze.sort()
 
-        wechselgeld.append(max(moeglichemuenzen))
-        betrag-=max(moeglichemuenzen)
-        del moeglichemuenzen[:]
+    while betrag > 0:
+        for x in munze[::-1]:
+            if x <= betrag:
+                wechselgeld.append(x)
+                betrag-=x
+                break
 
     return wechselgeld
 
@@ -69,9 +64,9 @@ print("##### Aufgabe 31b #####")
 print("Münzwerte=[1,2,5,10,20,50,100,200]")
 munze = [1, 2, 5, 10, 20, 50, 100, 200]
 print()
-print("Es soll folgender Betrag gewechselt werden: 245 Cent")
+print("Es soll folgender Betrag gewechselt werden: 261 Cent")
 print("Der Betrag wurde folgendermaßen gewechselt:")
-print(wechseln(munze, 245))
+print(wechseln(munze, 261))
 print()
 
 ######################################################################################################################
