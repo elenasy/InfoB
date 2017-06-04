@@ -12,7 +12,7 @@ def wichtung(x1,y1,x2,y2):
     return ergebnis
 
 # Erstellen des gerichteten und gewichteten Graphen
-n=3
+n=4
 gitter = {
     (i,j): [[(i2,j),wichtung(i,j,i2,j)] for i2 in (i-1,i+1) if i2 in range(n)] +
         [[(i,j2),wichtung(i,j,i,j2)] for j2 in (j-1,j+1) if j2 in range(n)]
@@ -21,17 +21,17 @@ gitter = {
 ###################################################################################################################
 
 # Finden des Nachbarknotens mit dem kürzesten Abstand
-def findeNaechstenNachbar(graph,aktuellerKnoten):
+def findeNaechstenNachbar(graph,aktuellerKnoten,listeAllerKnoten):
     nachbar=()
     abstand=float("inf")
 
     for element in graph[aktuellerKnoten]:
-        if element[1] < abstand:
-            nachbar=element[0]
-            abstand=element[1]
+        if element[0] in listeAllerKnoten:
+            if element[1] < abstand:
+                nachbar=element[0]
+                abstand=element[1]
     return [nachbar,abstand]
 
-#print(findeNaechstenNachbar(gitter,(4,6)))
 
 def findeKuerzestenWeg(graph,start,ziel):
     # Initialisieren
@@ -39,8 +39,8 @@ def findeKuerzestenWeg(graph,start,ziel):
     vorgaenger={}
     listeAllerKnoten=[]
 
-    for x in range(3):
-        for y in range(3):
+    for x in range(4):
+        for y in range(4):
             knotenpunkt = (x, y)
             if knotenpunkt not in listeAllerKnoten:
                 listeAllerKnoten.append(knotenpunkt)
@@ -51,9 +51,10 @@ def findeKuerzestenWeg(graph,start,ziel):
         abstand[start]=0
 
     aktuellerKnoten=(start)
+    del listeAllerKnoten[listeAllerKnoten.index(aktuellerKnoten)]
 
     while listeAllerKnoten:
-        naechsterNachbar,abstand[naechsterNachbar]=findeNaechstenNachbar(graph,aktuellerKnoten)
+        naechsterNachbar,abstand[naechsterNachbar]=findeNaechstenNachbar(graph,aktuellerKnoten,listeAllerKnoten)
 
         del listeAllerKnoten[listeAllerKnoten.index(naechsterNachbar)]
 
@@ -76,7 +77,7 @@ def findeKuerzestenWeg(graph,start,ziel):
 
     return list(reversed(weg))
 
-print(findeKuerzestenWeg(gitter,(0,0),(2,1)))
+print(findeKuerzestenWeg(gitter,(0,0),(2,2)))
 
 
 
