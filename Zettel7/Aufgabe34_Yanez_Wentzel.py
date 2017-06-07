@@ -12,7 +12,7 @@ def wichtung(x1,y1,x2,y2):
     return ergebnis
 
 # Erstellen des gerichteten und gewichteten Graphen
-n=4
+n=3
 gitter = {
     (i,j): [[(i2,j),wichtung(i,j,i2,j)] for i2 in (i-1,i+1) if i2 in range(n)] +
         [[(i,j2),wichtung(i,j,i,j2)] for j2 in (j-1,j+1) if j2 in range(n)]
@@ -20,27 +20,29 @@ gitter = {
 
 ###################################################################################################################
 
-# Finden des Nachbarknotens mit dem kürzesten Abstand
-def findeNaechstenNachbar(graph,aktuellerKnoten,listeAllerKnoten):
-    nachbar=()
-    abstand=float("inf")
+def findeGeringsteDistanz(abstand,listeAllerKnoten,minAbstand):
+    knoten=()
+    kleinsteDistanz=float("inf")
 
-    for element in graph[aktuellerKnoten]:
-        if element[0] in listeAllerKnoten:
-            if element[1] < abstand:
-                nachbar=element[0]
-                abstand=element[1]
-    return [nachbar,abstand]
+    for element in abstand:
+        if element in listeAllerKnoten:
+            if abstand[element] <= minAbstand:
+                knoten=element
+                kleinsteDistanz=abstand[element]
+                minAbstand=kleinsteDistanz
+    return[knoten,kleinsteDistanz,minAbstand]
 
 
 def findeKuerzestenWeg(graph,start,ziel):
-    # Initialisieren
+
+    ### Initialisieren
     abstand={}
     vorgaenger={}
     listeAllerKnoten=[]
+    minAbstand=float("inf")
 
-    for x in range(4):
-        for y in range(4):
+    for x in range(n):
+        for y in range(n):
             knotenpunkt = (x, y)
             if knotenpunkt not in listeAllerKnoten:
                 listeAllerKnoten.append(knotenpunkt)
@@ -48,24 +50,27 @@ def findeKuerzestenWeg(graph,start,ziel):
     for knoten in graph:
         abstand[knoten]=float("inf")
         vorgaenger[knoten]=[]
-        abstand[start]=0
+
+    abstand[start]=0
 
     aktuellerKnoten=(start)
-    del listeAllerKnoten[listeAllerKnoten.index(aktuellerKnoten)]
 
     while listeAllerKnoten:
-        naechsterNachbar,abstand[naechsterNachbar]=findeNaechstenNachbar(graph,aktuellerKnoten,listeAllerKnoten)
+        geringsterKnoten,abstand[geringsterKnoten],minAbstand=findeGeringsteDistanz(abstand,listeAllerKnoten,minAbstand)
 
-        del listeAllerKnoten[listeAllerKnoten.index(naechsterNachbar)]
+        del listeAllerKnoten[listeAllerKnoten.index(geringsterKnoten)]
 
-        for nachbar in graph[naechsterNachbar]:
+        for nachbar in graph[geringsterKnoten]:
             if nachbar[0] in listeAllerKnoten:
-                neuerAbstand=abstand[naechsterNachbar]+nachbar[1]
+                neuerAbstand=abstand[geringsterKnoten]+nachbar[1]
                 if neuerAbstand < abstand[nachbar[0]]:
                     abstand[nachbar[0]]=neuerAbstand
-                    vorgaenger[nachbar[0]]=naechsterNachbar
+                    vorgaenger[nachbar[0]]=geringsterKnoten
 
-        aktuellerKnoten=naechsterNachbar
+        minAbstand=findeGeringsteDistanz(abstand,listeAllerKnoten,minAbstand)[2]
+        aktuellerKnoten=geringsterKnoten
+        if aktuellerKnoten == ziel:
+            break
 
     weg=[]
     weg.append(ziel)
@@ -77,7 +82,7 @@ def findeKuerzestenWeg(graph,start,ziel):
 
     return list(reversed(weg))
 
-print(findeKuerzestenWeg(gitter,(0,0),(2,2)))
+print(findeKuerzestenWeg(gitter,(0,0),(1,4)))
 
 
 
