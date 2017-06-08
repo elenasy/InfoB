@@ -11,7 +11,7 @@ from turtle import *
 def Kochkurve(t,k,Schrittweite):
     '''Konstruktion der Kochkurve der k-ten Iteration mit einer variablen Schrittweite,
     t ist hierbei eine Instanz der Klasse Turtle'''
-    if k==0:        # Eiegentlich nicht existent
+    if k==0:        # Eigentlich nicht existent
         return
 
     if k==1:

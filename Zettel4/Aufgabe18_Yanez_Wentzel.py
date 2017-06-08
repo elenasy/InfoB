@@ -7,16 +7,18 @@
 ######################################################################################################################
 from random import randint
 
-def einzelExperiment(n):
+def einzelExperiment(n,random):
     '''Erzeugt so lange Zufallszahlen, bis jede Zahl von 1 bis n einmal vorgekommen ist'''
     gewuerfelteZahlen={}
     anzahlDerWuerfe=0
     # Die länge des Dictionaries gibt die Anzahl der enthaltenen Keys an, entspricht diese
     # dem vorgegebenen n, so sind alle Zahlen von 1 bis n mindesten einmal enthalten
     while len(gewuerfelteZahlen) != n:
-        zufallszahl=randint(1,n)
+        zufallszahl=random(1,n)
+
         # Befindet sich die Zufallszahl noch nicht im Dictionary, wird sie hinzugefügt,
         # wenn doch, dann wird der datzgehörige Value um 1 erhöht
+
         if zufallszahl not in gewuerfelteZahlen:
             gewuerfelteZahlen[zufallszahl]=1
         else:
@@ -41,7 +43,7 @@ for n in [10,100,1000]:
     listeAnzahlDerWuerfe = []
     listeHaeufigkeiten=[]
     for versuchszahl in range(100):
-        wuerfeDict,anzahlDerWuerfe=einzelExperiment(n)
+        wuerfeDict,anzahlDerWuerfe=einzelExperiment(n,randint)
         listeAnzahlDerWuerfe.append(anzahlDerWuerfe)
         listeHaeufigkeiten.append(findeHoechsteHaeufigkeit(wuerfeDict))
 

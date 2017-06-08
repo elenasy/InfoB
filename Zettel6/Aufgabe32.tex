@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage[a4paper,left=3cm,right=3cm,top=3cm,bottom=4cm]{geometry}
+\begin{document}
+\large{\hspace*{-5mm}\textbf{Aufgabe 32}}
+\\\\a) Gegeben sind $S, T: \mathbb{N} \rightarrow \mathbb{R}_{>0}$. Beweisen Sie: Aus S(n)=O(f(n)) und T(n)=O(g(n)) folgt S(n)T(n)=O(f(n)g(n)).
+\\\\$\exists n_{1},C_{1}: \vert f(n)\vert \le C_{1}*f(n) \hspace*{5mm}\forall n \ge n_{1}$
+\\\\$\exists n_{2},C_{2}: \vert g(n)\vert \le C_{2}*g(n) \hspace*{5mm}\forall n \ge n_{2}$
+\\\\$\vert f(n)g(n)\vert \le \vert f(n)\vert * \vert g(n) \vert \le C_{1}f(n)*C_{2}g(n) \hspace*{5mm} \forall n \ge max(n_{1},n_{2})$
+\\\\$= (C_{1}*C_{2})*f(n)*g(n)\hspace*{20mm}q.e.d.$
+\\\\\\\\Zu Aufgabenteil b und c:
+\\Für die Berechnung der Laufzeit gelten folgende Regeln: 
+\\\\Bei \textbf{Addition} ist der Summand mit der höchsten Potenz ausschlaggebend. 
+\\Bei \textbf{Multiplikation} werden die Potenzen der Laufzeiten aufaddiert.
+\\\\b) Geben Sie einen möglichst einfachen Ausdruck der Form O(f(n)) für folgenden Ausdruck an: $25n^2-100\frac{n}{2}+365$
+\\$\rightarrow O(n^2)$
+\\$\rightarrow$ da $n^2$ die höchste Potenz in der Summe ist
+\\\\c) Geben Sie einen möglichst einfachen Ausdruck der Form O(f(n)) für folgenden Ausdruck an: $23n + 12n*log_{2} n +1666$
+\\$\rightarrow O(n*log_{2}n)$
+\\$\rightarrow$ da $n*log_{2}n$ der Summand mit dem stärksten Monotonieverhalten bzw. Wachstum ist
+\end{document}
