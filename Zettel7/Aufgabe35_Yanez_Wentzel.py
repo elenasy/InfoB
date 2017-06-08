@@ -61,12 +61,11 @@ def wechseln(muenztypen,betrag):
                         gesamtloesung.append(list(loesung))
                         del loesung[:]
                     # Münze ist zulässig aber das Problem ist nicht gelöst
-                    # Füge Münze zur Teillösung hinzu und beginne bei der ersten Münze
+                    # Füge Münze zur Teillösung hinzu und beginne bei der ersten Münze der Liste
                     else:
                         loesung.append(muenztypen[muenzindex])
                         betrag -= muenztypen[muenzindex]
                         muenzindex = 0
-                # Münze ist nicht zulässig und letzte in Liste
                 else:
                     break
 
@@ -91,10 +90,20 @@ def wechseln(muenztypen,betrag):
                     muenzindex+=1
 
 
+# Leider Funktioniert der Algorithmus nicht so, wie er eigentlich soll. Er findet nicht alle möglichen Lösungen und
+# deshalb dann auch nicht die optimale, weil die optimale meistens leider gar nicht gefunden wurde.
+
 
 # Ausprobieren der Funktion
 kleingeld=[50,10,5,2,15,1]
-
+print("##### Aufgabe 35 #####")
+print("Wechseln des Betrags 30 Cent durch Backtracking")
+print("Die gegebenen Münzen sind: [50,10,5,2,15,1]")
+print("Die vom Algorithmus gefundene, optimale Lösung lautet: ")
 print(wechseln(kleingeld,30))
+print("Leider nicht optimal :(")
+print("##### ENDE #####")
+
+# Man hätte vielleicht noch mit einer sortierten Liste der Münzwerte arbeiten können
 
 
