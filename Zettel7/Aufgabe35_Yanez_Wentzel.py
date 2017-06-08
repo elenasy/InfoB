@@ -17,6 +17,18 @@ def munzeIstZulaessig(munze,betrag):
 def wechseln(muenztypen,betrag):
     '''Bestimmen aller möglichen Wechselbeträge durch Backtracking und finden des optimalen
     Wechselzustandes aus den gegebenen Münztypen 'muenztypen' für den gegebenen Betrag 'betrag' '''
+    # Abfangen ungültiger Betrageingaben
+    if type(betrag) != int:
+        raise TypeError("Der Betrag muss eine ganze Zahl sein!")
+
+    # Abfangen ungültiger Übergaben der Münzwerte
+    if type(muenztypen) != list:
+        raise TypeError("Es muss eine Liste mit ganzzahligen Münzwerten übergeben werden!")
+
+    for element in muenztypen:
+        if type(element) != int:
+            raise TypeError("Die Liste der Münzwerte darf nur ganze Zahlen enthalten!")
+
     # Initialisieren
     muenzindex=0
     maxIndexMuenztypen=len(muenztypen)-1
