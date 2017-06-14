@@ -12,6 +12,7 @@ class Halde:
         self.werte= [None]
         self.inHalde = {}
         self.n = 0
+
     def vertausche(self,i,j):
         self.schl[i],self.schl[j] = self.schl[j],self.schl[i]
         w1,w2 = self.werte[j],self.werte[i]
@@ -28,16 +29,19 @@ class Halde:
             self.werte[self.n] = zustand
         self.inHalde[zustand] = self.n
         self.zuklein(self.n)
+
     def entferneMin(self):
         if self.n==0: raise ValueError
         self.vertausche(1,self.n)
         self.n -= 1
         self.zugroß(1)
         return self.werte[self.n+1], self.schl[self.n+1]
+
     def Schlüsselverkleinern(self,zustand,schlüssel):
         i = self.inHalde[zustand]
         self.schl[i] = schlüssel
         self.zuklein(i)
+
     def zugroß(self,i):
         "Element a[i] der Halde a[1..n] ist eventuell zu groß."
         kind1 = 2*i
@@ -53,6 +57,7 @@ class Halde:
         if self.schl[i]>self.schl[kind]:
             self.vertausche(kind,i)
             self.zugroß(kind)
+
     def zuklein(self,i):
         "Element a[i] der Halde ist eventuell zu klein."
         if i==1: return
@@ -60,3 +65,12 @@ class Halde:
         if self.schl[eltern]>self.schl[i]:
             self.vertausche(eltern,i)
             self.zuklein(eltern)
+
+    def Anzahl_kleiner(self,k):
+        self.keysLower=[]
+        self.allKeys=self.inHalde.values()
+        for schluessel in self.allKeys:
+            if schluessel < k:
+                self.keysLower.append(schluessel)
+
+        print("Anzahl der Schlüssel kleiner als ",k,":",len(self.keysLower))
