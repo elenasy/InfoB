@@ -12,8 +12,8 @@ class Ausdruck:
         self.operand2=op2
 
     def __str__(self):
-        print("(",self.operand1.__str__(),self.operator.__str__(),self.operand2.__str__(),")")
+        return self.operand1.__str__(),self.operator.__str__(),self.operand2.__str__()
 
 
-a=Ausdruck('*',Ausdruck('+',3,'x'),Ausdruck('/',6,2))
-print(a)
+a=Ausdruck('*',Ausdruck('+',3,6),Ausdruck('/',6,2))
+print(a.__str__())
