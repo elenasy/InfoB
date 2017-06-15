@@ -21,6 +21,7 @@ class Halde:
 
     def einfügen(self,zustand,schlüssel):
         self.n += 1
+
         if self.n>=len(self.schl):
             self.schl.append(schlüssel)
             self.werte.append(zustand)
@@ -67,10 +68,20 @@ class Halde:
             self.zuklein(eltern)
 
     def Anzahl_kleiner(self,k):
+        # An dieser Stelle passiert noch nichts, da keine mathematischen Operationen durchgeführt werden, noch wird etwas gespeichert und
+        # es werden keine Vergleiche aufgestellt.
         self.keysLower=[]
+        # Es wird definiert, dass die Summe der Schlüssel der gesamten Anzahl der Werte in der Halde entsprechen. Es wird lediglich 
+        # definiert und es passiert noch nichts.
         self.allKeys=self.inHalde.values()
         for schluessel in self.allKeys:
+            # Die Schlüssel, die kleiner als k sind werden in eine Liste getan.
             if schluessel < k:
                 self.keysLower.append(schluessel)
-
+                
+# In diesem Schritt erfolgt die erste mathematische Operation. Die Länge der Liste wird berechnet. D. h. die Schlüssel innerhalb der 
+# Liste werden summiert. Die Addition beträgt im schlimmsten Fall T(n)=2n. Dies entspricht einer Laufzeit von O(n), da die Konstante "2"
+# bei Laufzeiten ignoriert wird.
         print("Anzahl der Schlüssel kleiner als ",k,":",len(self.keysLower))
+    
+    # Die Informationen habe ich aus: http://www.inf.fu-berlin.de/lehre/SS12/ALP2/slides/V6_Rekursion_vs_Iteration_ALP2.pdf
